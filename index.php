@@ -7,6 +7,6 @@
         }
     }
     else{
-        ModeloController::index();
+        ModeloController::nuevo();
     }
 ?>

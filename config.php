@@ -1,3 +1,3 @@
 <?php
-    define("urlsite","http://localhost/practicaFECHA");
+    define("urlsite","http://localhost/login_php");
 ?>

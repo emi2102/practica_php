@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="vista/css/style.css">
-    <title>Formularios</title>
+    <title>USUARIOS</title>
 </head>
 <body>
-    <h1 class="text-centrado">Formulario</h1>
+    <h1 class="text-centrado">SISTEMAS DE USUARIOS</h1>
 </body>
 </html>

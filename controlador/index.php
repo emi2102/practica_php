@@ -6,12 +6,11 @@
         public function __construct(){
             $this->model=new Modelo();
         }
-
         
         // mostrar
         static function index(){
             $datos=new Modelo();
-            $dato=$datos->mostrar("datos","1");
+            $dato=$datos->mostrar("usuario","1");
             require_once("vista/index.php");
         }
 
@@ -24,20 +23,25 @@
         static function guardar(){
             $nombre=$_REQUEST['nombre'];
             $apellido=$_REQUEST['apellido'];
-            $correo=$_REQUEST['correo'];
+             $correo=$_REQUEST['correo'];
+            $n_usuario=$_REQUEST['n_usuario'];
             $contrasenia=$_REQUEST['contrasenia'];
-            $fecha=$_REQUEST['fecha'];
-            $data="'".$nombre."','".$apellido."','".$correo."','".$contrasenia."','".$fecha."'";
-            $producto=new Modelo();
-            $dato=$producto->insertar("datos",$data);
-            header("location:".urlsite);
+            $data="'".$nombre."','".$apellido."','".$correo."','".$n_usuario."','".$contrasenia."'";
+            $usuario=new Modelo();
+            if($usuario->validar_User_existente("usuario","n_usuario='".$n_usuario."'")){
+              header('location:'.ModeloController::nuevo());
+              echo "<script>alert('el nombre_usuario: $n_usuario ya no esta disponible');</script>";
+            }else{
+              $dato=$usuario->insertar("usuario",$data);
+               header('location:'.ModeloController::iniciar());
+            }
          }
 
           // editar
         static function editar(){
             $id=$_REQUEST['id'];
             $datos=new Modelo();
-            $dato=$datos->mostrar("datos","id=".$id);
+            $dato=$datos->mostrar("usuario","id=".$id);
             require_once("vista/editar.php");
          }
  
@@ -47,20 +51,44 @@
             $nombre=$_REQUEST['nombre'];
             $apellido=$_REQUEST['apellido'];
             $correo=$_REQUEST['correo'];
+            $n_usuario=$_REQUEST['n_usuario'];
             $contrasenia=$_REQUEST['contrasenia'];
-            $fecha=$_REQUEST['fecha'];
-            $data="nombre='".$nombre."',apellido='".$apellido."',correo='".$correo."',contrasenia='".$contrasenia."',fecha='".$fecha."'";
+            $data="nombre='".$nombre."',apellido='".$apellido."',correo='".$correo."',n_usuario='".$n_usuario."',contrasenia='".$contrasenia."'";
              $datos=new Modelo();
-             $dato=$datos->actualizar("datos",$data,"id=".$id);
-             header("location:".urlsite);
+             if($datos->validar_User_existente_Edit("usuario","n_usuario='".$n_usuario."'","id!=".$id)){
+               header('location:'.ModeloController::editar());
+                echo "<script>alert('El nombre_usuario: $n_usuario ya no esta disponible');</script>";
+             }
+             else{
+              $dato=$datos->actualizar("usuario",$data,"id=".$id);
+              header('location:'.ModeloController::index());
+             }
+          }
+          static function iniciar(){
+            require_once("vista/login.php");
+
+          }
+          static function login(){
+            $usuario=$_REQUEST['n_usuario'];
+            $contrasenia=$_REQUEST['contrasenia'];
+             $datos=new Modelo();
+             $data="n_usuario='".$usuario."' AND contrasenia='".$contrasenia."'";
+             $dato=$datos->login("usuario",$data);
+            if($dato==true){
+                header('location:'.ModeloController::index());
+            }
+            else{
+              echo "<script>alert('la contraseña/nombre de usuario no coinciden');</script>";
+             header('location:'.ModeloController::iniciar());
+            }
           }
  
         // Eliminar
           static function eliminar(){
             $id=$_REQUEST['id'];
             $datos=new Modelo();
-            $dato=$datos->eliminar("datos","id=".$id);
-            header("location:".urlsite);
+            $dato=$datos->eliminar("usuario","id=".$id);
+            header('location:'.ModeloController::index());
          }
     }
 ?>
